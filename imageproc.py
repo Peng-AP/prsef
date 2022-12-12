@@ -14,4 +14,17 @@ import subprocess
 #     file.write(f"C:\\Users\\AaronPeng\\Desktop\\PRSEF\\data\\set01\\V000\\images\\frame{i}.png\n")
 # file.close() 
 
+import cv2
+import imutils
+img = cv2.imread("C:\\Users\\AaronPeng\\Desktop\\PRSEF\\data\\set01\\V000\\images\\frame0.png")
+img = imutils.resize(img, width=320)
+cv2.imshow("img",img)
+cv2.waitKey()
+
+""" for i in range(1711):
+    img = cv2.imread(f"C:\\Users\\AaronPeng\\Desktop\\PRSEF\\data\\set01\\V000\\images\\frame{i}.png")
+
+    cv2.resize(img,None,fx=0.5,fy=0.5)
+
+ """
 
