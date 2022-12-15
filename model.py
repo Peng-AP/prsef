@@ -45,15 +45,15 @@ def showFrame(frameNum, cThresh=0.6, sThresh=1000):
     dims = (640,480)
     file = data[frameNum]['filename']
     annotations = data[frameNum]['objects']
-    img = cv2.imread(file)
+    img = cv2.resize(cv2.imread(file),dims)
+    padding = 2
     smalls = []
 
     for i in range(len(annotations)):
         obj = annotations[i]
         w = int(obj["relative_coordinates"]['width']*dims[0])
         h = int(obj["relative_coordinates"]['height']*dims[1])
-        print((w,h))
-        if((w*h < 1000 or obj['confidence']<.6) and obj['class_id'] != 9): 
+        if((w*h < 62 or obj['confidence']<.6) and obj['class_id'] != 9): 
             smalls.insert(0,i)
 
     for i in smalls: del annotations[i]
@@ -63,15 +63,20 @@ def showFrame(frameNum, cThresh=0.6, sThresh=1000):
         c_Y = int(obj["relative_coordinates"]['center_y']*dims[1])
         w = int(obj["relative_coordinates"]['width']*dims[0])
         h = int(obj["relative_coordinates"]['height']*dims[1])
-        cv2.rectangle(img,(c_X-int(w/2),c_Y-int(h/2)),(c_X+int(w/2),c_Y+int(h/2)),(0,255,0))
+        cv2.rectangle(img,(c_X-int(w/2) - padding,c_Y-int(h/2) - padding),(c_X+int(w/2) + padding,c_Y+int(h/2) + padding),(0,255,0))
+        for i in range(16): 
+            for j in range(12): cv2.rectangle(img,(i*40,j*40),(i*40+40,j*40+40),(255,0,0))
 
     cv2.imshow("images",img)
     cv2.waitKey()
 
-for i in range(1711):
+showFrame(0)
+""" for i in range(1711):
     showFrame(i)
     time.sleep(1.5)
     cv2.destroyAllWindows()
+ """
+
 
 """
 model.add(Conv2D(input_shape=(640,480,3),filters=64,kernel_size=(3,3),padding="same", activation="relu"))
