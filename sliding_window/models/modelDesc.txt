@@ -1,0 +1,256 @@
+Model 1: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 3
+    Test Loss: 0.0937 
+    Test Accuracy: 0.969
+Model 2: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    AvgP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    AvgP p=(2,2)
+    Flatten
+    Dropout 0.2
+    Dense 5, softmax
+    --
+    Adam lr 5e-4
+    loss BCE
+    metrics BinAcc
+    Epochs 3
+    Test Loss: 0.105    
+    Test Accuracy: 0.967
+Model 3: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(4,4)
+    Conv2d f=10, k=(2,2), relu
+    AvgP p=(2,2)
+    Flatten
+    Dropout 0.5
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 3
+    Test Loss: 0.116 
+    Test Accuracy: 0.961
+Model 4: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 5, softmax
+    --
+    Adam lr 5e-4
+    loss BCE
+    metrics BinAcc
+    Epochs 4
+    Test Loss: 0.0966
+    Test Accuracy: 0.967   
+Model 5: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 256, relu
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 2
+    Test Loss: 0.0857
+    Test Accuracy: 0.971
+Model 6: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    AvgP p=(2,2)
+    Dropout 0.3
+    Conv2d f=10, k=(3,3), relu
+    AvgP p=(2,2)
+    Dropout 0.3
+    Flatten
+    Dense 256, relu
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 2
+    Test Loss: 0.0929
+    Test Accuracy: 0.970
+Model 7: 
+    input = 100,100,3
+    Conv2d f=4, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=16, k=(3,3), relu
+    MaxP p=(2,2)
+    Dropout 0.4
+    Flatten
+    Dense 256, relu
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 2
+    Test Loss: 0.0839 
+    Test Accuracy: 0.9726
+Model 8: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 256, relu
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 3
+    Test Loss: 0.0781
+    Test Accuracy: 0.974
+Model 9: 
+    input = 50,50,1
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 25, relu
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 3
+    Test Loss: 0.103
+    Test Accuracy: 0.963
+Model 10(NEW DATA): 
+    input = 50,50,1
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 25, relu
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 3
+    Test Loss: 0.130
+    Test Accuracy: 0.951
+
+-----------Coordinate Labels-------------
+
+Model 1:
+    input = 50,50,1
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 25, relu
+    Dense 4, softmax
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 3
+    Test Loss: 18602.578
+    Test Accuracy: 0.686
+Model 2:
+    input = 50,50,1
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=20, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 100, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 3
+    Test Loss: 2219.304
+    Test Accuracy: 0.790
+Model 3:
+    input = 50,50,1
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=30, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.4
+    Dense 100, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 3
+    Test Loss: 2042.902
+    Test Accuracy: 0.793
+Model 4:
+    input = 50,50,1
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=30, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dense 100, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 3
+    Test Loss: 2194.335
+    Test Accuracy: 0.790
+Model Fast:
+    input = 50,50,1
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=30, k=(3,3), relu
+    MaxP p=(3,3)
+    Dropout 0.3
+    Flatten
+    Dense 16, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 3
+    Test Loss: 2697.8379
+    Test Accuracy: 0.751
