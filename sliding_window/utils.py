@@ -1,8 +1,17 @@
 import cv2
 import numpy as np
+import random
 import glob
 import pickle
 from ensemble_boxes import *
+
+def squarifyPed(ped, nped):
+    uno = random.randint(0,9)
+    dos = random.randint(0,9)
+    chunk1 = nped[0:36,uno:uno+9]
+    chunk2 = nped[0:36,dos:dos+9]
+    ped = np.concatenate((chunk1,ped,chunk2), axis = 1)
+    return ped
 
 def drawOutputs(file,cls,coords):
     img = cv2.imread(file)
@@ -11,7 +20,7 @@ def drawOutputs(file,cls,coords):
     return img
 
 def load_data(num, grayscale = False):
-    with open(f"C:\\Users\\AaronPeng\\Desktop\\PRSEF\\sliding_window\\pkls\\img{(num+1)*100}{'gs' if grayscale else ''}.pkl",'rb') as pkl:
+    with open(f"C:\\Users\\xaep\\Desktop\\PRSEF\\sliding_window\\pkls\\img{(num+1)*100}{'gs' if grayscale else ''}.pkl",'rb') as pkl:
         res = pickle.load(pkl)
         if(grayscale): res = np.expand_dims(res,-1)
         return res
