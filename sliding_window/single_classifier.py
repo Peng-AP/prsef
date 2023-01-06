@@ -40,12 +40,12 @@ for i in range(50000):
         realy.append([0,0,0,1])
 
 print(nt)
-print(".")
+print(".")"""
 peds = []
 npeds = []
 for i in range(500):
-    pimg = cv2.imread(f"C:\\Users\\xaep\\documents\\DC-ped-dataset_base.tar\\1\\ped_examples\\img_{'0'*(5-len(str(i)))}{i}.pgm")
-    npimg = cv2.imread(f"C:\\Users\\xaep\\documents\\DC-ped-dataset_base.tar\\1\\non-ped_examples\\img_{'0'*(5-len(str(i)))}{i}.pgm")
+    pimg = cv2.imread(f"C:\\Users\\xaep\\documents\\DC-ped-dataset_base.tar\\1\\ped_examples\\img_{'0'*(5-len(str(i)))}{i}.pgm",0)
+    npimg = cv2.imread(f"C:\\Users\\xaep\\documents\\DC-ped-dataset_base.tar\\1\\non-ped_examples\\img_{'0'*(5-len(str(i)))}{i}.pgm",0)
     peds.append(pimg)
     npeds.append(npimg)
 
@@ -56,16 +56,17 @@ output.close()
 output = open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\npedinputs.pkl",'wb')
 pickle.dump(npeds,output)
 output.close()
+"""
 output = open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\cifarX.pkl",'wb')
 pickle.dump(realx,output)
 output.close()
 
 output = open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\cifarY.pkl",'wb')
 pickle.dump(realy,output)
-output.close()"""
+output.close()
 
 
-"""anns = pd.read_csv("C:\\Users\\xaep\\Desktop\\PRSEF\\labels.csv").to_numpy()
+anns = pd.read_csv("C:\\Users\\xaep\\Desktop\\PRSEF\\labels.csv").to_numpy()
 d = {}
 annotations = []
 inputs = []
@@ -103,7 +104,7 @@ pickle.dump(inputs,output)
 output.close() 
 output = open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\coordlabels.pkl",'wb')
 pickle.dump(coordinateLabels,output)
-output.close()""" 
+output.close()
 
 
 
@@ -113,7 +114,7 @@ output.close()"""
     #cv2.imshow("img",img)
     #cv2.waitKey()
 
-""" with open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\grey_4inputs.pkl",'rb') as pkl: inputs = pickle.load(pkl)
+with open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\grey_4inputs.pkl",'rb') as pkl: inputs = pickle.load(pkl)
 for i in range(len(inputs)):
     h,w,c = inputs[i].shape
     if(h > w): inputs[i] = cv2.copyMakeBorder(inputs[i],0,0,(h-w)//2,(h-w)//2,cv2.BORDER_CONSTANT)
@@ -141,21 +142,29 @@ print(np.array(cifarinputs).shape,pedinputs.shape,npedinputs.shape)
 inputs = np.concatenate((cifarinputs,npedinputs,pedinputs),0)
 labels = np.concatenate((cifarlabels,[[1,0,0,0]]*500,[[0,1,0,0]]*500),0) 
 
-
+inputs = np.array([cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) for image in inputs])/255
 
 print(inputs.shape)
 
 
-"""for i in range(10):
+for i in range(10):
     index = random.randint(0,len(inputs))
     chunk = inputs[index]
     cv2.imshow('img',chunk)
-    cv2.waitKey()"""
+    cv2.waitKey()
+
 
 x_train, x_test, y_train, y_test = train_test_split(inputs, labels, test_size=0.3)
 x_test, x_val, y_test, y_val = train_test_split(x_test, y_test, test_size=0.5)
 
 print(x_train.shape)
+dist = np.array([0,0,0,0])
+for l in y_train: dist += l
+print(dist)
+
+
+
+exit()
 
 input_shape = (32,32,3)
 
@@ -173,6 +182,8 @@ model = Sequential(
     ]
 )
 
+
+
 model.compile(
     optimizer=keras.optimizers.Adam(learning_rate=1e-3),
     loss='categorical_crossentropy',
@@ -181,12 +192,12 @@ model.compile(
 
 print("Model Compiled")
 
-model.fit(x_train, y_train,epochs=3,validation_data=(x_val,y_val),shuffle=True)
+model.fit(x_train, y_train,epochs=10,validation_data=(x_val,y_val),shuffle=True)
 
 
 results = model.evaluate(x_test,y_test)
 print(f"Test Loss: {results[0]} \nTest Accuracy: {results[1]}")
 
-model.save("C:\\Users\\xaep\\Desktop\\PRSEF\\sliding_window\\models\\model_trial_1")
+model.save("C:\\Users\\xaep\\Desktop\\PRSEF\\sliding_window\\models\\model_trial_2")
 
 print("Saved Model.") 
