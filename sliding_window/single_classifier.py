@@ -11,18 +11,57 @@ import pickle
 from sklearn.model_selection import train_test_split
 from utils import squarify
 import math
+import keras.datasets
 
 
 """Data"""
 num_classes = 5
 image_dirs = "C:\\Users\\AaronPeng\\Desktop\\PRSEF\\object-dataset\\"
 classes = {
-    '"pedestrian"' : 0,
-    '"biker"' : 1,
-    '"car"' : 2,
-    '"truck"' : 3,
-    '"trafficLight"' : 4,
+    'background' : 0,
+    'pedestrian' : 1,
+    'automobile' : 2,
+    'truck' : 3
 }
+
+(x_train, y_train), (x_test, y_test) = keras.datasets.cifar10.load_data()
+
+realx = []
+realy = []
+nt = 0
+for i in range(50000):
+    if(len(realx) == 1000): break
+    if(y_train[i] == 1):
+        realx.append(x_train[i])
+        realy.append(2)
+    elif(y_train[i] == 9):
+        nt += 1
+        realx.append(x_train[i])
+        realy.append(3)
+print(nt)
+print(".")
+peds = []
+npeds = []
+for i in range(500):
+    pimg = cv2.imread(f"C:\\Users\\AaronPeng\\Downloads\\DC-ped-dataset_base.tar\\1\\ped_examples\\img_{'0'*(5-len(str(i)))}{i}.pgm")
+    npimg = cv2.imread(f"C:\\Users\\AaronPeng\\Downloads\\DC-ped-dataset_base.tar\\1\\non-ped_examples\\img_{'0'*(5-len(str(i)))}{i}.pgm")
+    peds.append(pimg)
+    npeds.append(npimg)
+
+
+output = open("C:\\Users\\AaronPeng\\Desktop\\PRSEF\\ClassifierData\\pedinputs.pkl",'wb')
+pickle.dump(peds,output)
+output.close() 
+output = open("C:\\Users\\AaronPeng\\Desktop\\PRSEF\\ClassifierData\\npedinputs.pkl",'wb')
+pickle.dump(npeds,output)
+output.close()
+output = open("C:\\Users\\AaronPeng\\Desktop\\PRSEF\\ClassifierData\\cifarX.pkl",'wb')
+pickle.dump(realx,output)
+output.close()
+output = open("C:\\Users\\AaronPeng\\Desktop\\PRSEF\\ClassifierData\\cifarY.pkl",'wb')
+pickle.dump(realy,output)
+output.close()
+
 
 """anns = pd.read_csv("C:\\Users\\AaronPeng\\Desktop\\PRSEF\\labels.csv").to_numpy()
 d = {}
@@ -84,12 +123,12 @@ output = open('C:\\Users\\AaronPeng\\Desktop\\PRSEF\\ClassifierData\\grey_4_sq_i
 pickle.dump(inputs, output)
 output.close() """
 
-with open("C:\\Users\\AaronPeng\\Desktop\\PRSEF\\ClassifierData\\realimageinputs.pkl",'rb') as pkl: inputs = pickle.load(pkl)
+"""with open("C:\\Users\\AaronPeng\\Desktop\\PRSEF\\ClassifierData\\realimageinputs.pkl",'rb') as pkl: inputs = pickle.load(pkl)
 with open("C:\\Users\\AaronPeng\\Desktop\\PRSEF\\ClassifierData\\coordlabels.pkl", 'rb') as pkl: labels = pickle.load(pkl)
 inputs = np.array(inputs)
 labels = np.array(labels) 
 
-print(labels.shape)
+print(labels.shape)"""
 
 
 """for i in range(10):
@@ -98,7 +137,7 @@ print(labels.shape)
     cv2.imshow('img',chunk)
     cv2.waitKey()"""
 
-x_train, x_test, y_train, y_test = train_test_split(inputs, labels, test_size=0.3)
+"""x_train, x_test, y_train, y_test = train_test_split(inputs, labels, test_size=0.3)
 x_test, x_val, y_test, y_val = train_test_split(x_test, y_test, test_size=0.5)
 
 print(x_train.shape)
@@ -135,4 +174,4 @@ print(f"Test Loss: {results[0]} \nTest Accuracy: {results[1]}")
 
 model.save("C:\\Users\\AaronPeng\\Desktop\\PRSEF\\models\\model_coord_fast")
 
-print("Saved Model.") 
+print("Saved Model.") """
