@@ -21,15 +21,14 @@ user = 'AaronPeng'
 
 """Data"""
 num_classes = 5
+image_dirs = "C:\\Users\\xaep\\Desktop\\PRSEF\\object-dataset\\"
 classes = {
     'background' : 0,
     'pedestrian' : 1,
     'automobile' : 2,
     'truck' : 3
 }
-ped = "C:\\Users\\AaronPeng\\Downloads\\DC-ped-dataset_base.tar"
 """
-
 (x_train, y_train), (x_test, y_test) = keras.datasets.cifar10.load_data()
 
 realx = []
@@ -38,37 +37,36 @@ nt = 0
 for i in range(50000):
     if(len(realx) == 2000): break
     if(y_train[i] == 1):
-        realx.append(x_train[i][:,:,0])
+        realx.append(x_train[i])
         realy.append([0,0,1,0])
     elif(y_train[i] == 9):
         nt += 1
-        realx.append(x_train[i][:,:,0])
+        realx.append(x_train[i])
         realy.append([0,0,0,1])
 
 print(nt)
-print(".")
+print(".")"""
 peds = []
 npeds = []
-for i in range(1000):
-    pimg = cv2.imread(f"{ped}\\1\\ped_examples\\img_{'0'*(5-len(str(i)))}{i}.pgm",0)
-    npimg = cv2.imread(f"{ped}\\1\\non-ped_examples\\img_{'0'*(5-len(str(i)))}{i}.pgm",0)
+for i in range(500):
+    pimg = cv2.imread(f"C:\\Users\\xaep\\documents\\DC-ped-dataset_base.tar\\1\\ped_examples\\img_{'0'*(5-len(str(i)))}{i}.pgm",0)
+    npimg = cv2.imread(f"C:\\Users\\xaep\\documents\\DC-ped-dataset_base.tar\\1\\non-ped_examples\\img_{'0'*(5-len(str(i)))}{i}.pgm",0)
     peds.append(pimg)
     npeds.append(npimg)
 
 
-output = open(f"{script_dir}\\ClassifierData\\pedinputs.pkl",'wb')
+output = open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\pedinputs.pkl",'wb')
 pickle.dump(peds,output)
 output.close() 
-
-output = open(f"{script_dir}\\ClassifierData\\npedinputs.pkl",'wb')
+output = open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\npedinputs.pkl",'wb')
 pickle.dump(npeds,output)
 output.close()
-
-output = open(f"{script_dir}\\ClassifierData\\cifarX.pkl",'wb')
+"""
+output = open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\cifarX.pkl",'wb')
 pickle.dump(realx,output)
 output.close()
 
-output = open(f"{script_dir}\\ClassifierData\\cifarY.pkl",'wb')
+output = open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\cifarY.pkl",'wb')
 pickle.dump(realy,output)
 output.close()"""
 """
@@ -134,57 +132,47 @@ output = open('C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\grey_4_sq_inputs
 pickle.dump(inputs, output)
 output.close() """
 
-with open(f"{script_dir}\\ClassifierData\\cifarX.pkl",'rb') as pkl: cifarinputs = pickle.load(pkl)
-with open(f"{script_dir}\\ClassifierData\\cifarY.pkl",'rb') as pkl: cifarlabels = pickle.load(pkl)
-with open(f"{script_dir}\\ClassifierData\\npedinputs.pkl", 'rb') as pkl: npedinputs = pickle.load(pkl)
-with open(f"{script_dir}\\ClassifierData\\pedinputs.pkl",'rb') as pkl: pedinputs = pickle.load(pkl)
+with open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\cifarX.pkl",'rb') as pkl: cifarinputs = pickle.load(pkl)
+with open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\cifarY.pkl",'rb') as pkl: cifarlabels = pickle.load(pkl)
+with open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\npedinputs.pkl", 'rb') as pkl: npedinputs = pickle.load(pkl)
+with open("C:\\Users\\xaep\\Desktop\\PRSEF\\ClassifierData\\pedinputs.pkl",'rb') as pkl: pedinputs = pickle.load(pkl)
 
-for i in range(1000):
-    pedinputs[i] = squarifyPed(pedinputs[i],npedinputs[999-i])
-    npedinputs[i] = squarifyPed(npedinputs[i],npedinputs[999-i])
-for i in range(1000):
+for i in range(500):
+    pedinputs[i] = squarifyPed(pedinputs[i],npedinputs[499-i])
+    npedinputs[i] = squarifyPed(npedinputs[i],npedinputs[499-i])
+for i in range(500):
     pedinputs[i],npedinputs[i] = cv2.resize(pedinputs[i],(32,32)),cv2.resize(npedinputs[i],(32,32))
 pedinputs = np.array(pedinputs)
 npedinputs = np.array(npedinputs)
 print(np.array(cifarinputs).shape,pedinputs.shape,npedinputs.shape)
 inputs = np.concatenate((cifarinputs,npedinputs,pedinputs),0)
-labels = np.concatenate((cifarlabels,[[1,0,0,0]]*1000,[[0,1,0,0]]*1000),0) 
+labels = np.concatenate((cifarlabels,[[1,0,0,0]]*500,[[0,1,0,0]]*500),0) 
 
-inputs = inputs/255
+inputs = np.array([cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) for image in inputs])/255
 
 print(inputs.shape)
+
+
+for i in range(10):
+    index = random.randint(0,len(inputs))
+    chunk = inputs[index]
+    cv2.imshow('img',chunk)
+    cv2.waitKey()
 
 
 x_train, x_test, y_train, y_test = train_test_split(inputs, labels, test_size=0.3)
 x_test, x_val, y_test, y_val = train_test_split(x_test, y_test, test_size=0.5)
 
-augx_train = []
-augy_train = []
-
-for i in range(len(x_train)):
-    img = x_train[i]
-    flipped = cv2.flip(img,1)
-    dimmed = img/2
-    augx_train.append(img)
-    augx_train.append(flipped)
-    augx_train.append(dimmed)
-    augx_train.append(flipped/2)
-    """
-    plt.imshow(img,cmap='gray', vmin=0, vmax=1)
-    plt.show()
-    plt.imshow(flipped,cmap='gray', vmin=0, vmax=1)
-    plt.show()
-    plt.imshow(dimmed,cmap='gray', vmin=0, vmax=1)
-    plt.show()
-    """
-    for i in range(4): augy_train.append(y_train[i])
-
-augx_train,augy_train = np.array(augx_train),np.array(augy_train)
-
-print(augx_train.shape)
+print(x_train.shape)
+dist = np.array([0,0,0,0])
+for l in y_train: dist += l
+print(dist)
 
 
-input_shape = (32,32,1)
+
+exit()
+
+input_shape = (32,32,3)
 
 model = Sequential(
     [
@@ -195,34 +183,22 @@ model = Sequential(
         Conv2D(6,kernel_size=(3,3),activation='relu'),
         Dropout(0.3),
         Flatten(),
-        Dense(10, activation = "relu"),
+        Dense(16, activation = "relu"),
         Dense(4,activation="softmax")
     ]
 )
 
-callback = keras.callbacks.EarlyStopping(
-    monitor='val_accuracy', 
-    patience=15,
-    restore_best_weights = True,
-    verbose = 1,
-    start_from_epoch = 50
-)
+
 
 model.compile(
-    optimizer=keras.optimizers.Adam(learning_rate=5e-4),
+    optimizer=keras.optimizers.Adam(learning_rate=1e-3),
     loss='categorical_crossentropy',
     metrics=['accuracy']
 )
 
 print("Model Compiled")
 
-history = model.fit(
-    x_train,y_train,
-    epochs = 100,
-    validation_data = (x_val,y_val),
-    callbacks = [callback],
-    shuffle = True
-)
+model.fit(x_train, y_train,epochs=10,validation_data=(x_val,y_val),shuffle=True)
 
 plt.plot(history.history['accuracy'])
 plt.plot(history.history['val_accuracy'])
@@ -243,6 +219,6 @@ plt.show()
 results = model.evaluate(x_test,y_test)
 print(f"Test Loss: {results[0]} \nTest Accuracy: {results[1]}")
 
-if(results[1] > .8533):
-    model.save(f"{script_dir}\\models\\cifar_ped_model_final")
-    print("Saved Model.") 
+model.save("C:\\Users\\xaep\\Desktop\\PRSEF\\sliding_window\\models\\model_trial_2")
+
+print("Saved Model.") 
