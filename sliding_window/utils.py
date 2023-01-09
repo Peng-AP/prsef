@@ -6,19 +6,13 @@ import pickle
 from ensemble_boxes import *
 
 def squarifyPed(ped, nped):
-<<<<<<< HEAD
     uno = random.randint(0,4)
     dos = random.randint(5,9)
-=======
-    uno = random.randint(0,9)
-    dos = random.randint(0,9)
->>>>>>> 3b8e1931a1471175d90f36fd1e1ae28140ad1f52
     chunk1 = nped[0:36,uno:uno+9]
     chunk2 = nped[0:36,dos:dos+9]
     ped = np.concatenate((chunk1,ped,chunk2), axis = 1)
     return ped
 
-<<<<<<< HEAD
 def drawOutputs(file,boxes):
     classes = {
         'background' : 0,
@@ -38,12 +32,6 @@ def drawOutputs(file,boxes):
         img = cv2.imread(file)
         cv2.rectangle(img,(coords[0],coords[1]),(coords[2],coords[3]),(0,255,0))
         cv2.putText(img, ans, (coords[0],coords[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (36,255,12), 2)
-=======
-def drawOutputs(file,cls,coords):
-    img = cv2.imread(file)
-    cv2.rectangle(img,(10,10),(100,100),(0,255,0))
-    cv2.putText(img, "box 1", (0,10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (36,255,12), 2)
->>>>>>> 3b8e1931a1471175d90f36fd1e1ae28140ad1f52
     return img
 
 def load_data(num, grayscale = False):
