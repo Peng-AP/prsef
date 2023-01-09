@@ -1,17 +1,41 @@
 import cv2
 import numpy as np
+import random
 import glob
 import pickle
 from ensemble_boxes import *
 
-def drawOutputs(file,cls,coords):
-    img = cv2.imread(file)
-    cv2.rectangle(img,(10,10),(100,100),(0,255,0))
-    cv2.putText(img, "box 1", (0,10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (36,255,12), 2)
+def squarifyPed(ped, nped):
+    uno = random.randint(0,4)
+    dos = random.randint(5,9)
+    chunk1 = nped[0:36,uno:uno+9]
+    chunk2 = nped[0:36,dos:dos+9]
+    ped = np.concatenate((chunk1,ped,chunk2), axis = 1)
+    return ped
+
+def drawOutputs(file,boxes):
+    classes = {
+        'background' : 0,
+        'pedestrian' : 1,
+        'automobile' : 2,
+        'truck' : 3
+    }
+    for box in boxes:
+        ans = ''
+        res = box[0]
+        coords = box[1]
+        for key in classes.keys():
+            if(res[classes[key]] > 0.5 and ans != ''):
+                ans = key
+            elif(res[classes[key]] > 0.5):
+                ans += f', {key}'
+        img = cv2.imread(file)
+        cv2.rectangle(img,(coords[0],coords[1]),(coords[2],coords[3]),(0,255,0))
+        cv2.putText(img, ans, (coords[0],coords[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (36,255,12), 2)
     return img
 
 def load_data(num, grayscale = False):
-    with open(f"C:\\Users\\AaronPeng\\Desktop\\PRSEF\\sliding_window\\pkls\\img{(num+1)*100}{'gs' if grayscale else ''}.pkl",'rb') as pkl:
+    with open(f"C:\\Users\\xaep\\Desktop\\PRSEF\\sliding_window\\pkls\\img{(num+1)*100}{'gs' if grayscale else ''}.pkl",'rb') as pkl:
         res = pickle.load(pkl)
         if(grayscale): res = np.expand_dims(res,-1)
         return res

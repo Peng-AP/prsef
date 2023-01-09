@@ -254,3 +254,183 @@ Model Fast:
     Epochs 3
     Test Loss: 2697.8379
     Test Accuracy: 0.751
+
+--------Cifar Pedestrian Dataset---------
+
+Model 0:
+    input = 32,32,1
+    Conv2d f=4, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=8, k=(3,3), relu
+    MaxP p=(2,2)
+    Dropout 0.3
+    Flatten
+    Dense 16, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 20
+    Test Loss: 0.463
+    Test Accuracy: 0.797
+Model 1:
+    input = 32,32,1
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=15, k=(3,3), relu
+    Dropout 0.4
+    Flatten
+    Dense 16, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 15
+    Test Loss: 0.467
+    Test Accuracy: 0.777
+Model 2:
+    input = 32,32,1
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 15
+    Test Loss: 0.434
+    Test Accuracy: 0.810
+Model 3:
+    input = 32,32,1
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    Conv2d f=10, k=(3,3), relu
+    Conv2d f=10, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 15
+    Test Loss: 0.487
+    Test Accuracy: 0.773
+Model 4:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 5e-4
+    loss MSE
+    metrics accuracy
+    Epochs 25
+    Test Loss: 0.418
+    Test Accuracy: 0.843
+Model 5:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 5e-4
+    loss MSE
+    metrics accuracy
+    Epochs 50
+    Test Loss: 0.481
+    Test Accuracy: 0.770
+
+### With Data Augmentation ###
+
+Model 6:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 5e-4
+    loss MSE
+    metrics accuracy
+    Epochs 30
+    Test Loss: 2.037
+    Test Accuracy: 0.410
+
+### Without Data Augmentation ###
+
+Model 7:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 50
+    Test Loss: 0.387
+    Test Accuracy: 0.823
+Model 8:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 50
+    Test Loss: 0.804
+    Test Accuracy: 0.817
+Model Final:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 5e-4
+    loss MSE
+    metrics accuracy
+    Epochs 50
+    Test Loss: 0.804
+    Test Accuracy: 0.817
+
