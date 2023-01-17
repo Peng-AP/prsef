@@ -13,7 +13,23 @@ def squarifyPed(ped, nped):
     ped = np.concatenate((chunk1,ped,chunk2), axis = 1)
     return ped
 
-def drawOutputs(file,boxes):
+def determineClass(cls):
+    classes = {
+        'background' : 0,
+        'pedestrian' : 1,
+        'automobile' : 2,
+        'truck' : 3
+    }
+    conf = 0
+    label = ''
+    for key in classes.keys():
+        if(cls[classes[key]] > conf):
+            conf = cls[classes[key]]
+            label = key
+    return conf,label
+
+
+def drawOutputs(img,boxes,name):
     classes = {
         'background' : 0,
         'pedestrian' : 1,
@@ -21,17 +37,10 @@ def drawOutputs(file,boxes):
         'truck' : 3
     }
     for box in boxes:
-        ans = ''
-        res = box[0]
-        coords = box[1]
-        for key in classes.keys():
-            if(res[classes[key]] > 0.5 and ans != ''):
-                ans = key
-            elif(res[classes[key]] > 0.5):
-                ans += f', {key}'
-        img = cv2.imread(file)
-        cv2.rectangle(img,(coords[0],coords[1]),(coords[2],coords[3]),(0,255,0))
-        cv2.putText(img, ans, (coords[0],coords[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (36,255,12), 2)
+        x,y,w,h = box[:4]
+        conf = box[4]
+        cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0))
+        cv2.putText(img, f"{name}, {round(conf*100,1)}%", (x,y+10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (1,1,1), 1)
     return img
 
 def load_data(num, grayscale = False):
@@ -40,10 +49,10 @@ def load_data(num, grayscale = False):
         if(grayscale): res = np.expand_dims(res,-1)
         return res
 
-def single_img(dir, grayscale):
+def single_img(dir, grayscale, shape):
     if(grayscale): img = np.expand_dims(cv2.imread(dir, 0),-1)
     else: img = cv2.imread(dir)
-    img = squarify(img, (50,50))
+    img = squarify(img, shape)
     if(grayscale):
         img = np.expand_dims(img,-1)
     return img, img.shape
@@ -55,7 +64,8 @@ def squarify(chunk, final_dims):
     chunk = cv2.resize(chunk,final_dims)
     return chunk
 
-def get_inputs(img,ratios,sizes,stride,final_dims):
+def get_inputs(img,ratios,sizes,stride,final_dims,img_dims):
+    img = np.expand_dims(cv2.resize(img,img_dims),-1)
     ret = []
     dims = []
     imgW,imgH,c = img.shape
@@ -66,12 +76,35 @@ def get_inputs(img,ratios,sizes,stride,final_dims):
             for row in range((imgH-height)//stride):
                 for col in range((imgW-width)//stride):
                     chunk = img[stride*col:stride*col+height,stride*row:stride*row+width]
-                    dims.append((stride*col/300,stride*row/480,width/300, height/480))
+                    dims.append((stride*col,stride*row,width, height))
                     ret.append(squarify(chunk,final_dims))
-    return np.array(ret),dims
+    return np.array(ret),np.array(dims)
 
-def NMS(boxes, scores, labels):
-	return nms([boxes],[scores],[labels],weights=None)
+def NMS(boxes, scores, overlapThresh):
+    if(len(boxes) == 0): return []
+    if(boxes.dtype.kind == "i"):
+        boxes = boxes.astype("float")
+    picked = []
+    x1 = boxes[:,0]
+    y1 = boxes[:,1]
+    x2 = x1+boxes[:,2]
+    y2 = y1+boxes[:,3]
+    area = (x2 - x1 + 1) * (y2 - y1 + 1)
+    idxs = np.argsort(scores)
+    while(len(idxs) > 0):
+        last = len(idxs) - 1
+        i = idxs[last]
+        picked.append(i)
+        xx1 = np.maximum(x1[i], x1[idxs[:last]])
+        yy1 = np.maximum(y1[i], y1[idxs[:last]])
+        xx2 = np.minimum(x2[i], x2[idxs[:last]])
+        yy2 = np.minimum(y2[i], y2[idxs[:last]])
+        w = np.maximum(0, xx2 - xx1 + 1)
+        h = np.maximum(0, yy2 - yy1 + 1)
+        overlap = (w * h) / area[idxs[:last]]
+        idxs = np.delete(idxs, np.concatenate(([last],np.where(overlap > overlapThresh)[0])))
+
+    return boxes[picked].astype("int"),scores[picked]
 
 def get_results(res):
     classes = {
