@@ -30,17 +30,18 @@ def determineClass(cls):
 
 
 def drawOutputs(img,boxes,name):
-    classes = {
-        'background' : 0,
-        'pedestrian' : 1,
-        'automobile' : 2,
-        'truck' : 3
-    }
+    match name:
+        case "ped":
+            color = (255,0,0)
+        case "car":
+            color = (0,255,0)
+        case "truck":
+            color = (0,0,255)
     for box in boxes:
         x,y,w,h = box[:4]
         conf = box[4]
-        cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0))
-        cv2.putText(img, f"{name}, {round(conf*100,1)}%", (x,y+10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (1,1,1), 1)
+        cv2.rectangle(img,(x,y),(x+w,y+h),color)
+        #cv2.putText(img, f"{name}, {round(conf*100,1)}%", (x,y+10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (1,1,1), 1)
     return img
 
 def load_data(num, grayscale = False):
@@ -64,20 +65,26 @@ def squarify(chunk, final_dims):
     chunk = cv2.resize(chunk,final_dims)
     return chunk
 
-def get_inputs(img,ratios,sizes,stride,final_dims,img_dims):
-    img = np.expand_dims(cv2.resize(img,img_dims),-1)
+def get_inputs(img,ratios,sizes,stride,final_dims):
     ret = []
     dims = []
     imgW,imgH,c = img.shape
+
     for ratio in ratios:
+
         for size in sizes:
+
             width = int(ratio[0] * size)
             height = int(ratio[1] * size)
+
             for row in range((imgH-height)//stride):
+
                 for col in range((imgW-width)//stride):
-                    chunk = img[stride*col:stride*col+height,stride*row:stride*row+width]
-                    dims.append((stride*col,stride*row,width, height))
+
+                    chunk = img[stride * col : stride * col + height, stride * row : stride * row + width]
+                    dims.append((stride*row,stride*col,width,height))
                     ret.append(squarify(chunk,final_dims))
+
     return np.array(ret),np.array(dims)
 
 def NMS(boxes, scores, overlapThresh):

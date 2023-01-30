@@ -4,41 +4,63 @@ import time
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
+import random
 
-IMAGE_DIMENSIONS = (200,200)
 RATIOS = [(1,1),(1,1.5),(1.5,1)]
-SIZES = [30,50,75,100,150]
+SIZES = np.array([30,50,75,100,150])
     
-classifier = single_predictor("cifar_ped_model_final")
+classifier = single_predictor("LeNet_background_smooth")
 
-img = np.expand_dims(cv2.imread("C:\\Users\\AaronPeng\\Desktop\\PRSEF\\sliding_window\\imgs\\red_car.png",0),-1)/255
-print(img.shape)
+img_dir = "C:\\Users\\AaronPeng\\Desktop\\PRSEF\\sliding_window\\imgs\\standard2.jpg"
+colorImg = cv2.cvtColor(cv2.imread(img_dir), cv2.COLOR_BGR2RGB)
+
+image = cv2.imread(img_dir,0)
+
+img = np.expand_dims(image,-1)/255
+
+scale = [img.shape[0]/250,img.shape[1]/250]
+SIZES = np.floor(SIZES*np.average(scale))
+print(SIZES)
+
+plt.imshow(colorImg)
+plt.show()
+#plt.imshow(image_sharp,cmap="gray")
+#plt.show()
 batch = [img]
 
 for image in batch:
-     inputs,dims = get_inputs(image,RATIOS,SIZES,5, (32,32), IMAGE_DIMENSIONS)
+     inputs,dims = get_inputs(image,RATIOS,SIZES,5, (32,32))
+
+     print(inputs.shape)
      results = classifier.predict(inputs)    
      print(results.shape,dims.shape)
-     scores = [[],[],[],[]]
-     for res in results:
-          max = -1
-          index = 0
-          for i in range(4):
-               if(res[i] > max):
-                    max = res[i]
-                    index = i
-          if(max > 0.4): scores[index].append(max)
-     new_img = cv2.resize(img,IMAGE_DIMENSIONS)
+     scores = [[],[],[],[]] #backgrounds,peds,cars,trucks
+     dimensions = [[],[],[],[]]
+
+     #split into classes
+     for i in range(results.shape[0]):
+          res = results[i]
+          dim = dims[i]
+          sorted = np.argsort(res) #find highest score
+          max = res[sorted[-1]]
+          #if(dim[0] == 25 and dim[2] == 140):
+               #print(res)
+               #plt.imshow(inputs[i])
+               #plt.show()
+          if(max > 0.5): 
+               scores[sorted[-1]].append(max)
+               dimensions[sorted[-1]].append(dim)
+
+     #nms and draw
      for j in range(1,4):
-          filtered,conf = NMS(dims,np.array(scores[j]),0.5)
+          filtered,conf = NMS(np.array(dimensions[j]),np.array(scores[j]),0.4)
           print(filtered.shape)
-          print(filtered,conf)
           boxes = []
-          for i in range(len(filtered)-2,len(filtered)):
+          for i in range(filtered.shape[0]//5 + 1):
                boxes.append([filtered[i][0],filtered[i][1],filtered[i][2],filtered[i][3],conf[i]])
-          print(boxes)
-          new_img = drawOutputs(new_img,boxes,("pedestrian" if j==1 else ("car" if j==2 else "truck")))
-     plt.imshow(new_img,cmap='gray')
+          print(boxes, j)
+          new_img = drawOutputs(colorImg,boxes,("ped" if j==1 else ("car" if j==2 else "truck")))
+     plt.imshow(colorImg)
      plt.show()
 
 
