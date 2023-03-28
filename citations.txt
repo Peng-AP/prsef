@@ -1,0 +1,6 @@
+3D Object Representations for Fine-Grained Categorization
+       Jonathan Krause, Michael Stark, Jia Deng, Li Fei-Fei
+       4th IEEE Workshop on 3D Representation and Recognition, at ICCV 2013 (3dRR-13). Sydney, Australia. Dec. 8, 2013.
+
+M. Enzweiler and D. M. Gavrila. “Monocular Pedestrian Detection: Survey and Experiments”. 
+IEEE Trans. on Pattern Analysis and Machine Intelligence, vol.31, no.12, pp.2179-2195, 2009.
