@@ -1,0 +1,526 @@
+Model 1: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 3
+    Test Loss: 0.0937 
+    Test Accuracy: 0.969
+Model 2: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    AvgP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    AvgP p=(2,2)
+    Flatten
+    Dropout 0.2
+    Dense 5, softmax
+    --
+    Adam lr 5e-4
+    loss BCE
+    metrics BinAcc
+    Epochs 3
+    Test Loss: 0.105    
+    Test Accuracy: 0.967
+Model 3: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(4,4)
+    Conv2d f=10, k=(2,2), relu
+    AvgP p=(2,2)
+    Flatten
+    Dropout 0.5
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 3
+    Test Loss: 0.116 
+    Test Accuracy: 0.961
+Model 4: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 5, softmax
+    --
+    Adam lr 5e-4
+    loss BCE
+    metrics BinAcc
+    Epochs 4
+    Test Loss: 0.0966
+    Test Accuracy: 0.967   
+Model 5: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 256, relu
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 2
+    Test Loss: 0.0857
+    Test Accuracy: 0.971
+Model 6: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    AvgP p=(2,2)
+    Dropout 0.3
+    Conv2d f=10, k=(3,3), relu
+    AvgP p=(2,2)
+    Dropout 0.3
+    Flatten
+    Dense 256, relu
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 2
+    Test Loss: 0.0929
+    Test Accuracy: 0.970
+Model 7: 
+    input = 100,100,3
+    Conv2d f=4, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=16, k=(3,3), relu
+    MaxP p=(2,2)
+    Dropout 0.4
+    Flatten
+    Dense 256, relu
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 2
+    Test Loss: 0.0839 
+    Test Accuracy: 0.9726
+Model 8: 
+    input = 100,100,3
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 256, relu
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 3
+    Test Loss: 0.0781
+    Test Accuracy: 0.974
+Model 9: 
+    input = 50,50,1
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 25, relu
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 3
+    Test Loss: 0.103
+    Test Accuracy: 0.963
+Model 10(NEW DATA): 
+    input = 50,50,1
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 25, relu
+    Dense 5, softmax
+    --
+    Adam lr 1e-3
+    loss BCE
+    metrics BinAcc
+    Epochs 3
+    Test Loss: 0.130
+    Test Accuracy: 0.951
+
+-----------Coordinate Labels-------------
+NOTE: this was an attempt to modify the loss function so that both coordinates and classes of objects were detected
+The attempt was largely a failure, do not combine Mean Squared Error with Cross Entropy
+
+Model 1:
+    input = 50,50,1
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 25, relu
+    Dense 4, softmax
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 3
+    Test Loss: 18602.578
+    Test Accuracy: 0.686
+Model 2:
+    input = 50,50,1
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=20, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.3
+    Dense 100, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 3
+    Test Loss: 2219.304
+    Test Accuracy: 0.790
+Model 3:
+    input = 50,50,1
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=30, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dropout 0.4
+    Dense 100, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 3
+    Test Loss: 2042.902
+    Test Accuracy: 0.793
+Model 4:
+    input = 50,50,1
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=30, k=(3,3), relu
+    MaxP p=(2,2)
+    Flatten
+    Dense 100, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 3
+    Test Loss: 2194.335
+    Test Accuracy: 0.790
+Model Fast:
+    input = 50,50,1
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(3,3)
+    Conv2d f=30, k=(3,3), relu
+    MaxP p=(3,3)
+    Dropout 0.3
+    Flatten
+    Dense 16, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 3
+    Test Loss: 2697.8379
+    Test Accuracy: 0.751
+
+--------Cifar Pedestrian Dataset---------
+
+Model 0:
+    input = 32,32,1
+    Conv2d f=4, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=8, k=(3,3), relu
+    MaxP p=(2,2)
+    Dropout 0.3
+    Flatten
+    Dense 16, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 20
+    Test Loss: 0.463
+    Test Accuracy: 0.797
+Model 1:
+    input = 32,32,1
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=15, k=(3,3), relu
+    Dropout 0.4
+    Flatten
+    Dense 16, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 15
+    Test Loss: 0.467
+    Test Accuracy: 0.777
+Model 2:
+    input = 32,32,1
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 15
+    Test Loss: 0.434
+    Test Accuracy: 0.810
+Model 3:
+    input = 32,32,1
+    Conv2d f=5, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=10, k=(3,3), relu
+    Conv2d f=10, k=(3,3), relu
+    Conv2d f=10, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 15
+    Test Loss: 0.487
+    Test Accuracy: 0.773
+Model 4:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 5e-4
+    loss MSE
+    metrics accuracy
+    Epochs 25
+    Test Loss: 0.418
+    Test Accuracy: 0.843
+Model 5:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 5e-4
+    loss MSE
+    metrics accuracy
+    Epochs 50
+    Test Loss: 0.481
+    Test Accuracy: 0.770
+
+### With Data Augmentation ###
+NOTE: It was found later in the experimentation that the data augmentation was done incorrectly, leading to wildly inaccurate results
+
+Model 6:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 5e-4
+    loss MSE
+    metrics accuracy
+    Epochs 30
+    Test Loss: 2.037
+    Test Accuracy: 0.410
+
+### Without Data Augmentation ###
+
+Model 7:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 50
+    Test Loss: 0.387
+    Test Accuracy: 0.823
+Model 8:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 1e-3
+    loss MSE
+    metrics accuracy
+    Epochs 50
+    Test Loss: 0.804
+    Test Accuracy: 0.817
+Model Final:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 5e-4
+    loss MSE
+    metrics accuracy
+    Epochs 50
+    Test Loss: 0.804
+    Test Accuracy: 0.817
+
+----------------Big Data--------------------
+LeNet5:
+    Test Loss: 0.3422321677207947
+    Test Accuracy: 0.895433783531189
+Model 0:
+    input = 32,32,1
+    Conv2d f=2, k=(3,3), relu
+    MaxP p=(2,2)
+    Conv2d f=4, k=(3,3), relu
+    Conv2d f=6, k=(3,3), relu
+    Dropout 0.3
+    Flatten
+    Dense 10, relu
+    Dense 4, relu
+    --
+    Adam lr 5e-4
+    loss CrossEntropy
+    metrics accuracy
+    Epochs 50
+    Test Loss: 0.4366473853588104
+    Test Accuracy: 0.8150684833526611
+
+NOTE: At this point, I realized that these metrics are not representative of model performance anymore
+ALL LeNet Models past this point are based on the architecture of:
+    Conv2D f=6, k=(5,5), relu
+    AveragePooling2D(2,2),
+    Conv2D(16,kernel_size=(5,5),activation='relu'),
+    AveragePooling2D(2,2),
+    Flatten(),
+    Dense(120, activation = 'relu'),
+    Dense(84,activation='relu'),
+    Dense(4,activation="softmax")
+
+~65k images
+LeNet Background: ~92%
+~200k images
+LeNet Background Augmentation: ~95.7%
+LeNet Background Aug + Label Smoothing ~95.2%
+LeNet Background Aug + Label Smoothing + L2 Weight Decay ~95%
+LeNet Background Aug + Label Smoothing + L2 Weight Decay + Dropout + LR Schedule ~95.3%
+LeNet Background Aug + Label Smoothing + L2 Weight Decay + Dropout + LR Schedule + Gaussian Noise ~93.1%
+LeNet Background Aug + Label Smoothing + L2 Weight Decay + Dropout + LR Schedule + Activation Reg ~96%
+
+--- 72x72 ---
+
+LeNet 1:
+    Background Aug + Label Smoothing + L2 Weight Decay + Dropout + LR Schedule
+    3x3 average kernels
+    ~98.3%
+Small 1:
+    Background Aug + Label Smoothing + L2 Weight Decay + Dropout + LR Schedule
+    Input(shape=input_shape),
+    Conv2D(6,kernel_size=(5,5),activation='relu', kernel_regularizer=L2(0.001), bias_regularizer=L2(0.001)),
+    Dropout(0.1),
+    AveragePooling2D(2,2),
+    Conv2D(8,kernel_size=(5,5),activation='relu', kernel_regularizer=L2(0.001), bias_regularizer=L2(0.001)),
+    Dropout(0.1),
+    AveragePooling2D(2,2),
+    Conv2D(10,kernel_size=(5,5),activation='relu', kernel_regularizer=L2(0.001), bias_regularizer=L2(0.001)),
+    Dropout(0.1),
+    AveragePooling2D(2,2),
+    Conv2D(12,kernel_size=(5,5),activation='relu', kernel_regularizer=L2(0.001), bias_regularizer=L2(0.001)),
+    Flatten(),
+    Dense(120, activation = "relu", kernel_regularizer=L2(0.001), bias_regularizer=L2(0.001)),
+    Dense(84,activation='relu', kernel_regularizer=L2(0.001), bias_regularizer=L2(0.001)),
+    Dense(4,activation="softmax")
+Small 2:
+    Only 10 Epochs
+    Conv2D(6,kernel_size=(5,5),activation='relu', kernel_regularizer=L2(0.001), bias_regularizer=L2(0.001)),
+    Dropout(0.1),
+    AveragePooling2D(2,2),
+    Conv2D(8,kernel_size=(5,5),activation='relu', kernel_regularizer=L2(0.001), bias_regularizer=L2(0.001)),
+    Dropout(0.1),
+    AveragePooling2D(2,2),
+    Flatten(),
+    Dense(84,activation='relu', kernel_regularizer=L2(0.001), bias_regularizer=L2(0.001)),
+    Dense(4,activation="softmax")
+Small 3:
+    Conv2D(6,kernel_size=(5,5),activation='relu', kernel_regularizer=L2(0.001), bias_regularizer=L2(0.001)),
+    Dropout(0.1),
+    AveragePooling2D(2,2),
+    Conv2D(16,kernel_size=(5,5),activation='relu', kernel_regularizer=L2(0.001), bias_regularizer=L2(0.001)),
+    Dropout(0.1),
+    AveragePooling2D(2,2),
+    Flatten(),
+    Dense(84,activation='relu', kernel_regularizer=L2(0.001), bias_regularizer=L2(0.001)),
+    Dense(4,activation="softmax")
